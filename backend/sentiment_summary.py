@@ -153,10 +153,9 @@ def generate_summary(sent, score):
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_auth_token=access_token)
     model = TFAutoModelForSeq2SeqLM.from_pretrained(model_name, use_auth_token=access_token)
 
-    doc ='awesome watch for the price,great product  love the continous innovation in this field and given the price-tag of 149 this product is a steal  bought it 1 week back  battery is satisfactory  charges fast  discharges within 12-15 hours  but it has a touch screen so naturally its going to eat-up battery for entry level android-wear pretty decent,fantastic if you need a watch and have android phone if i did not want to wear a watch im not sure i would need it keep you from getting you phone out so much for new updates and texts and such i like being able to change faces and colors im just starting to download games and apps for itbattery life is one waking day charger is cool'
     if 't5' in model_name: 
-        doc = "summarize: " + doc
-    tokenized = tokenizer([doc], return_tensors='np')
+        sent = "summarize: " + sent
+    tokenized = tokenizer([sent], return_tensors='np')
     out = model.generate(**tokenized, max_length=128)
     if score >= threshold:
         with tokenizer.as_target_tokenizer():
