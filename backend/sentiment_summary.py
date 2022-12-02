@@ -157,14 +157,9 @@ def generate_summary(sent, score):
         sent = "summarize: " + sent
     tokenized = tokenizer([sent], return_tensors='np')
     out = model.generate(**tokenized, max_length=128)
-    if score >= threshold:
-        with tokenizer.as_target_tokenizer():
-            print('Positive Sentiment Summary')
-            print(tokenizer.decode(out[0], skip_special_tokens=True))
-    else:
-        with tokenizer.as_target_tokenizer():
-            print('Negative Sentiment Summary')
-            print(tokenizer.decode(out[0], skip_special_tokens=True))
+    with tokenizer.as_target_tokenizer():
+        summary = tokenizer.decode(out[0], skip_special_tokens=True)
+        return summary
     
 
     
