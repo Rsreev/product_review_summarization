@@ -142,7 +142,7 @@ def preprocess(sent):
 def sentiment_score(sent):
 	tokenizer = AutoTokenizer.from_pretrained('nlptown/bert-base-multilingual-uncased-sentiment',truncation=True, max_length=512)
 	model = AutoModelForSequenceClassification.from_pretrained('nlptown/bert-base-multilingual-uncased-sentiment')
-	tokens = tokenizer.encode(review, return_tensors='pt', add_special_tokens=True,max_length=510, truncation=True)
+	tokens = tokenizer.encode(sent, return_tensors='pt', add_special_tokens=True,max_length=510, truncation=True)
 	result = model(tokens)
 	score = int(torch.argmax(result.logits)) + 1
 	return score
