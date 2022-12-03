@@ -3,14 +3,15 @@ import re
 import spacy
 from bs4 import BeautifulSoup
 from keras.preprocessing.text import Tokenizer 
-from keras.preprocessing.sequence import pad_sequences
+#from tensorflow.keras.utils import pad_sequences
 from nltk.corpus import stopwords
-from tensorflow.keras.layers import Input, LSTM, Embedding, Dense, Concatenate, TimeDistributed
-from tensorflow.keras.models import Model
-from tensorflow.keras.callbacks import EarlyStopping
+#from tensorflow.keras.layers import Input, LSTM, Embedding, Dense, Concatenate, TimeDistributed
+#from tensorflow.keras.models import Model
+#from tensorflow.keras.callbacks import EarlyStopping
 import warnings
 from sklearn.metrics.pairwise import cosine_similarity
 import nltk
+#nltk.download('stopwords')
 from textblob import TextBlob
 from collections import Counter
 from sentence_transformers import SentenceTransformer
@@ -19,19 +20,10 @@ import hdbscan
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
 
+def test():
+    return "Hello test"
 
-def summarize_reviews(reviews):
-    #main function to create the results
-    # Clean the texts
-    clean_texts = []
-    for text in reviews:
-        clean_texts.append(clean_text(text))
-    docs_per_topic,docs_df = topic_create(clean_texts)
-    tf_idf, count = c_tf_idf(docs_df.Doc.values, m=len(reviews))
-    top_n_words = extract_top_n_words_per_topic(tf_idf, count, docs_per_topic, n=20)
-    topic_sizes = extract_topic_sizes(docs_df); topic_sizes.head(10)
-    results = summarization(clean_texts,topic_sizes)
-    return results
+
     
 
 contractions = { 
@@ -246,15 +238,46 @@ def summarization(clean_texts,topic_sizes):
         aspects[j[0]] = [sentiment] + aspects[j[0]] 
     newhash = []
     sentiment = []
+    hashmap = dict()
     for i in new:
-        lis  = [i[0]]
+        lis  = []
+        
         sentiment = aspects[i[0]][0]
         x = Counter(aspects[i[0]])
-        for j in range(0,5):
+        for j in range(0,4):
             if j > len(x)-1:
                 lis = lis + ['None']
             elif x.most_common()[j][0] != sentiment:
                 lis = lis + [x.most_common()[j][0]]
         lis = lis + [sentiment]
-        newhash = newhash + [lis]
-    return (pd.DataFrame(newhash))
+        #newhash = newhash + [lis]
+        hashmap[i[0]]=lis
+
+    #print (type(hashmap))
+    #print (hashmap)
+    return hashmap
+    
+def summarize_reviews(reviews):
+    #main function to create the results
+    # Clean the texts
+    clean_texts = []
+    for text in reviews:
+        clean_texts.append(clean_text(text))
+    #docs_per_topic,docs_df = topic_create(clean_texts)
+    #tf_idf, count = c_tf_idf(docs_df.Doc.values, m=len(reviews))
+    #top_n_words = extract_top_n_words_per_topic(tf_idf, count, docs_per_topic, n=20)
+    #topic_sizes = extract_topic_sizes(docs_df); topic_sizes.head(10)
+    topic_sizes =10
+    results = summarization(clean_texts,topic_sizes)
+    return results
+
+def generate_summary(results):
+    stringresult ="the overall summary from reviews are"
+    sentiment = []
+    for i in results:
+        stringresult = stringresult+","+str(i)+ " "+ str(results[i][0])
+        sentiment = sentiment+[results[i][3]]
+    stringresult = stringresult+","+"overall"+max(sentiment)+"product"
+    return stringresult
+#review = ["camera is bad","camera is good", "batteries ara bad but camera is good"]
+#print(summarize_reviews(review))
