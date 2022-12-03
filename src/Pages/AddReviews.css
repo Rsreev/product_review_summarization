@@ -1,0 +1,17 @@
+.AddReviews{
+    margin-top: 100px;
+    
+}
+body{
+    background: white;
+}
+
+.Button{
+    margin-left: 100px;
+}
+.reviewText{
+    margin-top: 20px;
+    margin-right: 70px;
+    align-content: center;
+    width: max-content;
+}
