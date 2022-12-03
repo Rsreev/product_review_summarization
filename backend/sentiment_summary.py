@@ -97,7 +97,7 @@ slang_repl = {
     "wbu" : "what about you", "yolo" : "you only live once"  
 }
 
-#slang_keys = list(slang_repl.keys())
+slang_keys = list(slang_repl.keys())
 #present_slang = [k for k in tqdm(slang_keys) if check_presence(r"\b"+k+r"\b", verbose = False)]
 #slang_repl_subset = {k : slang_repl[k] for k in present_slang}
 #set(slang_repl.keys())-set(slang_repl_subset.keys())
@@ -164,6 +164,6 @@ def generate_summary(sent, score):
         summary = tokenizer.decode(out[0], skip_special_tokens=True)
         return summary
 
-if __name__ == '__main__':
-    generate_summary("camera is bad,camera is good,batteries bad,Camera is good but batteries are bad,Batteries are dead")
+#if __name__ == '__main__':
+    #generate_summary("camera is bad,camera is good,batteries bad,Camera is good but batteries are bad,Batteries are dead")
     

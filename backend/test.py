@@ -3,6 +3,7 @@ import topic_modelling as tp
 import sentiment_summary as ss
 from flask_cors import CORS, cross_origin
 import json
+import sentiment_summary as ss
 
 
 app = Flask(__name__)
@@ -11,11 +12,15 @@ CORS(app)
 
 def home():
     parsed = json.loads(request.data)
-    print (type(parsed));
-    print (list(parsed));
     results = tp.summarize_reviews(parsed)
     return results
 
+
+@app.route('/summarize',  methods=['GET', 'POST'])
+def home_1():
+    parsed = json.loads(request.data)
+    results = ss.summarize(parsed)
+    return {"data":results}
 
 # def summary():
     # print('hello')

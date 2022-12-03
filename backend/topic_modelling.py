@@ -263,10 +263,10 @@ def summarize_reviews(reviews):
     clean_texts = []
     for text in reviews:
         clean_texts.append(clean_text(text))
-    #docs_per_topic,docs_df = topic_create(clean_texts)
-    #tf_idf, count = c_tf_idf(docs_df.Doc.values, m=len(reviews))
-    #top_n_words = extract_top_n_words_per_topic(tf_idf, count, docs_per_topic, n=20)
-    #topic_sizes = extract_topic_sizes(docs_df); topic_sizes.head(10)
+    docs_per_topic,docs_df = topic_create(clean_texts)
+    tf_idf, count = c_tf_idf(docs_df.Doc.values, m=len(reviews))
+    top_n_words = extract_top_n_words_per_topic(tf_idf, count, docs_per_topic, n=20)
+    topic_sizes = extract_topic_sizes(docs_df); topic_sizes.head(10)
     topic_sizes =10
     results = summarization(clean_texts,topic_sizes)
     return results
@@ -279,5 +279,3 @@ def generate_summary(results):
         sentiment = sentiment+[results[i][3]]
     stringresult = stringresult+","+"overall"+max(sentiment)+"product"
     return stringresult
-#review = ["camera is bad","camera is good", "batteries ara bad but camera is good"]
-#print(summarize_reviews(review))
