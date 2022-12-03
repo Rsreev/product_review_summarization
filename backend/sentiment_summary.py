@@ -44,8 +44,11 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def summarize(review):
     sent = preprocess(review)
+    print(sent)
     score = sentiment_score(sent)
+    print(score)
     output = generate_summary(sent, score)
+    print(output)
     return output
 
 
@@ -160,7 +163,7 @@ def generate_summary(sent, score):
     with tokenizer.as_target_tokenizer():
         summary = tokenizer.decode(out[0], skip_special_tokens=True)
         return summary
-    
 
+if __name__ == '__main__':
+    generate_summary("camera is bad,camera is good,batteries bad,Camera is good but batteries are bad,Batteries are dead")
     
-
